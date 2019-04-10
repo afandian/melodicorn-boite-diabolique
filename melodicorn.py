@@ -39,6 +39,24 @@ filenames = {
 (27, 20): "wavs/wav-down/11.wav",
 }
 
+# If these are all set, restart.
+# Emergency for those times when sound gets jitery.
+resets = [
+(22, 6),
+(22, 5),
+(22, 25),
+(23, 24),
+(23, 25),
+(23, 5),
+(23, 6),
+(23, 12),
+(23, 13),
+(23, 16),
+(23, 20),
+]
+
+resets_set = set(resets)
+
 sounds = {}
 for (k, path) in filenames.items():
   sounds[k] = pg.mixer.Sound(path)
@@ -52,6 +70,16 @@ def stop(k):
   if k in sounds:
     sounds[k].fadeout(200)
 
+# Warning sound, then exit.
+# Assume script will be restarted.
+def reset():
+  for x in resets:
+    stop(x)
+  for x in resets:
+    start(x)
+    time.sleep(0.05)
+    stop(x)
+  exit(0)
 
 cols = [27, 22, 23]
 rows = [20, 24, 25, 5, 6, 12, 13, 16]
@@ -112,3 +140,7 @@ while True:
     GPIO.output(x, GPIO.HIGH)
   prev = next
   next = set()
+
+  # If the right keys are pressed, exit.
+  if prev.intersection(resets_set) == resets_set:
+    reset()

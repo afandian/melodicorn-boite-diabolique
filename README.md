@@ -17,4 +17,8 @@ Then depending on your speaker, you may wish to adjust the volume for the right 
     sudo amixer set PCM 200   
     python melodicorn.py
 
-or to run at startup add run-background.sh to /etc/rc.local 
+or to run at startup add to /etc/rc.local 
+
+    cd /home/pi/melodicorn && ./run-loop.sh &
+
+After a few hours of running the sounds gets garbled. Not sure why, but for now there's a reset key combination, which kills the Python process. The run-loop.sh restarts it.
